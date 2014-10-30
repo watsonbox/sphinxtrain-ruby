@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Sphinxtrain::VERSION
   spec.authors       = ["Howard Wilson"]
   spec.email         = ["howard@watsonbox.net"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Toolkit for training/adapting CMU Sphinx acoustic models.}
+  spec.description   = %q{Toolkit for training/adapting CMU Sphinx acoustic models.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
