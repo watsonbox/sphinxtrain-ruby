@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'sphinxtrain/ruby/version'
+require 'sphinxtrain/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "sphinxtrain-ruby"
-  spec.version       = Sphinxtrain::Ruby::VERSION
+  spec.version       = Sphinxtrain::VERSION
   spec.authors       = ["Howard Wilson"]
   spec.email         = ["howard@watsonbox.net"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
