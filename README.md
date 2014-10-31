@@ -1,6 +1,9 @@
-# Sphinxtrain::Ruby
+# sphinxtrain-ruby
 
-TODO: Write a gem description
+[![Build Status](http://img.shields.io/travis/watsonbox/sphinxtrain-ruby.svg?style=flat)](https://travis-ci.org/watsonbox/sphinxtrain-ruby)
+
+Toolkit for training/adapting CMU Sphinx acoustic models.
+
 
 ## Installation
 
@@ -16,9 +19,11 @@ Or install it yourself as:
 
     $ gem install sphinxtrain-ruby
 
+
 ## Usage
 
 TODO: Write usage instructions here
+
 
 ## Contributing
 
