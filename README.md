@@ -4,6 +4,8 @@
 
 Toolkit for training/adapting CMU Sphinx acoustic models.
 
+The main goal is to help with [adapting existing acoustic models](http://cmusphinx.sourceforge.net/wiki/tutorialadapt) to a specific speaker/accent. Currently only the English [Voxforge](http://voxforge.org/) model is supported as a base - in fact [an adapted one](http://grasch.net/node/21) created by Peter Grasch in 2013 using the most up to date training data available at that time. I can confirm his results of a few percent performance increase over Voxforge 0.4 for my accent at least (British English).
+
 
 ## Installation
 

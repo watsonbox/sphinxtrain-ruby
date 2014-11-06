@@ -3,10 +3,12 @@ require 'fileutils'
 module Sphinxtrain
   class Trainer
     BASE_DIR = File.join(Dir.home, '.sphinxtrain-ruby')
-    VOXFORGE_URL = "http://downloads.sourceforge.net/project/cmusphinx/Acoustic%20and%20Language%20Models/English%20Voxforge/voxforge-en-0.4.tar.gz"
+    #VOXFORGE_URL = "http://downloads.sourceforge.net/project/cmusphinx/Acoustic%20and%20Language%20Models/English%20Voxforge/voxforge-en-0.4.tar.gz"
+    VOXFORGE_URL = "http://files.kde.org/accessibility/Simon/am/voxforge_en_sphinx.cd_cont_5000.tar.gz"
     VOXFORGE_FILE = File.basename(VOXFORGE_URL)
     VOXFORGE_FOLDER = File.basename(VOXFORGE_FILE, '.tar.gz')
-    VOXFORGE_MODEL = File.join(BASE_DIR, VOXFORGE_FOLDER, "model_parameters/voxforge_en_sphinx.cd_cont_5000")
+    #VOXFORGE_MODEL = File.join(BASE_DIR, VOXFORGE_FOLDER, "model_parameters/voxforge_en_sphinx.cd_cont_5000")
+    VOXFORGE_MODEL = VOXFORGE_FOLDER
     RECORDINGS_DIR = File.join(BASE_DIR, 'recordings')
     NEW_MODEL = File.join(BASE_DIR, 'new_model')
 
