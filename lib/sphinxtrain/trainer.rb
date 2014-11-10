@@ -68,7 +68,7 @@ module Sphinxtrain
         gets
 
         # Small delay to avoid capturing audio connected with keypress
-        sleep 0.2 if index != 0
+        sleep 0.2
 
         # Record a single utterance captured by TrainingDecoder
         recognizer.recognize do |speech|

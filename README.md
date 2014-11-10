@@ -11,20 +11,26 @@ The main goal is to help with [adapting existing acoustic models](http://cmusphi
 
 Add this line to your application's Gemfile:
 
-    gem 'sphinxtrain-ruby'
+```ruby
+gem 'sphinxtrain-ruby'
+```
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install sphinxtrain-ruby
+```bash
+$ gem install sphinxtrain-ruby
+```
 
 
 ## Usage
 
-TODO: Write usage instructions here
+Run `sphinxtrain-ruby` from the command line and follow the instructions. See some example output [here](https://github.com/watsonbox/sphinxtrain-ruby/wiki/Example-Output).
 
 
 ## Contributing
