@@ -33,6 +33,15 @@ $ gem install sphinxtrain-ruby
 Run `sphinxtrain-ruby` from the command line and follow the instructions. See some example output [here](https://github.com/watsonbox/sphinxtrain-ruby/wiki/Example-Output).
 
 
+## To Do
+
+- [ ] Add support for different data sets, not just the example from CPU Sphinx
+- [ ] Allow re-recording when mistakes are made
+- [ ] Re-factor code and add specs
+- [ ] Consider using actual libs rather than command line tools for adapting model
+- [ ] Make command line wget downloads less verbose
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/watsonbox/sphinxtrain-ruby/fork )
