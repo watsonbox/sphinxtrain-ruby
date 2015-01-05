@@ -9,6 +9,8 @@ The main goal is to help with [adapting existing acoustic models](http://cmusphi
 
 ## Installation
 
+Please note that Ruby >= 2.1 is required for this gem.
+
 Add this line to your application's Gemfile:
 
 ```ruby
