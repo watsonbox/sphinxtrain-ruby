@@ -2,41 +2,40 @@ require 'fileutils'
 
 module Sphinxtrain
   class Trainer
-    BASE_DIR = File.join(Dir.home, '.sphinxtrain-ruby')
-    #VOXFORGE_URL = "http://downloads.sourceforge.net/project/cmusphinx/Acoustic%20and%20Language%20Models/English%20Voxforge/voxforge-en-0.4.tar.gz"
-    VOXFORGE_URL = "http://files.kde.org/accessibility/Simon/am/voxforge_en_sphinx.cd_cont_5000.tar.gz"
-    VOXFORGE_FILE = File.basename(VOXFORGE_URL)
-    VOXFORGE_FOLDER = File.basename(VOXFORGE_FILE, '.tar.gz')
-    #VOXFORGE_MODEL = File.join(BASE_DIR, VOXFORGE_FOLDER, "model_parameters/voxforge_en_sphinx.cd_cont_5000")
-    VOXFORGE_MODEL = VOXFORGE_FOLDER
-    RECORDINGS_DIR = File.join(BASE_DIR, 'recordings')
-    NEW_MODEL = File.join(BASE_DIR, 'new_model')
+    def acoustic_model
+      @acoustic_model ||= AcousticModel.voxforge_grasch
+    end
 
     def train
       Pocketsphinx.disable_logging
 
-      Dir.mkdir BASE_DIR rescue Errno::EEXIST
-      Dir.chdir BASE_DIR do
-        download_voxforge unless File.exist?(VOXFORGE_FILE)
-        download_assets unless arctic_file(:txt, :listoffiles, :transcription, :dic).all? { |f| File.exist? f }
-        record_sentences unless Dir.exist?(RECORDINGS_DIR)
+      Dir.mkdir Sphinxtrain.base_dir rescue Errno::EEXIST
+      Dir.chdir Sphinxtrain.base_dir do
+        if acoustic_model.downloaded?
+          log "=> Using existing acoustic model #{acoustic_model.description}", :yellow
+        else
+          log "=> Downloading #{acoustic_model.description}..."
+          acoustic_model.download!
+        end
 
-        analyse_model VOXFORGE_MODEL
+        download_assets unless arctic_file(:txt, :listoffiles, :transcription, :dic).all? { |f| File.exist? f }
+
+        if Dir.exist?(Sphinxtrain.recordings_dir)
+          log "=> Using sentences recorded in #{Sphinxtrain.recordings_dir}", :yellow
+        else
+          record_sentences
+        end
+
+        analyse_model
 
         duplicate_model
         adapt_model
 
-        analyse_model NEW_MODEL
+        analyse_model acoustic_model.adapted_folder
       end
     end
 
     private
-
-    def download_voxforge
-      log "=> Downloading Voxforge English 0.4 Acoustic Model..."
-      `wget #{VOXFORGE_URL}`
-      `tar xfz #{VOXFORGE_FILE}`
-    end
 
     def download_assets
       log "=> Downloading CMU ARCTIC Example Sentences..."
@@ -52,7 +51,7 @@ module Sphinxtrain
 
     def record_sentences
       log "=> Recording sentences..."
-      Dir.mkdir RECORDINGS_DIR unless Dir.exist?(RECORDINGS_DIR)
+      Dir.mkdir Sphinxtrain.recordings_dir unless Dir.exist?(Sphinxtrain.recordings_dir)
 
       recognizer = Pocketsphinx::LiveSpeechRecognizer.new
       decoder = TrainingDecoder.new(recognizer.decoder)
@@ -83,15 +82,15 @@ module Sphinxtrain
     def save_audio(data, sentence_index)
       raise "Can't save empty audio data" if data.nil? || data.empty?
 
-      File.open(File.join(RECORDINGS_DIR, "arctic_#{(sentence_index + 1).to_s.rjust(4, "0")}.raw"), "wb") do |file|
+      File.open(File.join(Sphinxtrain.recordings_dir, "arctic_#{(sentence_index + 1).to_s.rjust(4, "0")}.raw"), "wb") do |file|
         file.write data
       end
     end
 
-    def analyse_model(model)
+    def analyse_model(model_folder = acoustic_model.folder)
       log "=> Analysing acoustic model...\n"
 
-      result = Analyser.new(model).analyse(arctic_file(:txt), RECORDINGS_DIR) do |transcription, hypothesis, accuracy|
+      result = Analyser.new(model_folder).analyse(arctic_file(:txt), Sphinxtrain.recordings_dir) do |transcription, hypothesis, accuracy|
         puts "   ACTUAL: #{transcription}"
         puts "   RECORD: #{hypothesis}"
         puts "   RESULT: #{accuracy}\n\n"
@@ -102,9 +101,7 @@ module Sphinxtrain
 
     def duplicate_model
       log "=> Duplicating Voxforge acoustic model..."
-
-      FileUtils.rm_rf(NEW_MODEL) if Dir.exist?(NEW_MODEL)
-      FileUtils.cp_r(VOXFORGE_MODEL, NEW_MODEL)
+      acoustic_model.duplicate!
     end
 
     # Follows process described here: http://cmusphinx.sourceforge.net/wiki/tutorialadapt
@@ -112,17 +109,17 @@ module Sphinxtrain
       log "=> Adapting Voxforge acoustic model..."
 
       MapAdapter.new(
-        old_model: VOXFORGE_MODEL,
-        new_model: NEW_MODEL,
-        recordings_dir: RECORDINGS_DIR,
+        old_model: acoustic_model.folder,
+        new_model: acoustic_model.adapted_folder,
+        recordings_dir: Sphinxtrain.recordings_dir,
         sentences_transcription: arctic_file(:transcription),
         sentences_files: arctic_file(:listoffiles),
         sentences_dict: arctic_file(:dic)
       ).adapt
     end
 
-    def log(message)
-      puts message.colorize(:green)
+    def log(message, color = :green)
+      puts message.colorize(color)
     end
   end
 end
