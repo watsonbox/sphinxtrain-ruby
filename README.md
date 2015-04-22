@@ -32,7 +32,16 @@ $ gem install sphinxtrain-ruby
 
 ## Usage
 
-Run `sphinxtrain-ruby` from the command line and follow the instructions. See some example output [here](https://github.com/watsonbox/sphinxtrain-ruby/wiki/Example-Output).
+Run `sphinxtrain-ruby` from the command line and follow the instructions.  It will:
+
+1. Download and extract the Grasch Voxforge English 0.4 acoustic model (on first run)
+2. Download the CMU ARCTIC example sentences (on first run)
+3. Record the 20 example sentences. Press enter to record, speak sentence, then wait.
+4. Decode the sentences using the base acoustic model, giving an overall score.
+5. Duplicate and adapt the base acoustic model using the recorded sentences.
+6. Decode the sentences using the adapted acoustic model, giving an overall score.
+
+See some example output [here](https://github.com/watsonbox/sphinxtrain-ruby/wiki/Example-Output). All data is saved in `~/.sphinxtrain-ruby`.
 
 
 ## To Do
