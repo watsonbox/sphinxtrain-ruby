@@ -16,10 +16,6 @@ module Sphinxtrain
       MODEL_DESCRIPTIONS[MODEL_URLS.invert[url]] || url
     end
 
-    def base_dir
-      File.join(Dir.home, '.sphinxtrain-ruby')
-    end
-
     def downloaded?
       File.exist?(downloaded_filename)
     end

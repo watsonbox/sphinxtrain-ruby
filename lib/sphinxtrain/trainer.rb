@@ -26,12 +26,17 @@ module Sphinxtrain
           record_sentences
         end
 
-        analyse_model
+        result = analyse_model
 
         duplicate_model
         adapt_model
 
-        analyse_model acoustic_model.adapted_folder
+        adapted_result = analyse_model acoustic_model.adapted_folder
+
+        improvement = ((adapted_result/result)-1)*100
+
+        log "=> Adapted acoustic model improved by #{improvement}%. Test this model with:"
+        log "=> pocketsphinx_continuous -hmm #{File.join(Sphinxtrain.base_dir, acoustic_model.adapted_folder)} -inmic yes"
       end
     end
 
@@ -97,6 +102,7 @@ module Sphinxtrain
       end
 
       puts "   OVERALL: #{result}\n\n"
+      result
     end
 
     def duplicate_model
