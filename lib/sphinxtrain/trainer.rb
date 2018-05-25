@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'pastel'
 
 module Sphinxtrain
   class Trainer
@@ -125,7 +126,7 @@ module Sphinxtrain
     end
 
     def log(message, color = :green)
-      puts message.colorize(color)
+      puts ::Pastel.new.method(color).call(message)
     end
   end
 end
