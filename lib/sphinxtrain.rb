@@ -1,5 +1,5 @@
 require "pocketsphinx-ruby"
-require "colorize"
+require "pastel"
 require "word_aligner"
 
 require "sphinxtrain/version"
